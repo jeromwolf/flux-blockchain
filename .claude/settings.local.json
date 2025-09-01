@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(npx hardhat:*)",
+      "Bash(mkdir:*)",
+      "Bash(rm:*)",
+      "Bash(find:*)",
+      "Bash(npm run compile:*)",
+      "Bash(npm test)",
+      "Bash(pip3 install:*)",
+      "Bash(slither:*)",
+      "Bash(grep:*)",
+      "Bash(chmod:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}

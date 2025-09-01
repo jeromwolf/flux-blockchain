@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # Hardhat 개발 노드
+  hardhat-node:
+    build: .
+    container_name: flux-hardhat-node
+    ports:
+      - "8545:8545"
+    volumes:
+      - ./contracts:/app/contracts
+      - ./scripts:/app/scripts
+      - ./test:/app/test
+      - ./deployments:/app/deployments
+    environment:
+      - NODE_ENV=development
+    command: npx hardhat node --hostname 0.0.0.0
+    networks:
+      - flux-network
+
+  # 컨트랙트 배포 서비스
+  deployer:
+    build: .
+    container_name: flux-deployer
+    depends_on:
+      - hardhat-node
+    volumes:
+      - ./contracts:/app/contracts
+      - ./scripts:/app/scripts
+      - ./deployments:/app/deployments
+    environment:
+      - HARDHAT_NETWORK=localhost
+      - DEPLOYER_PRIVATE_KEY=${DEPLOYER_PRIVATE_KEY:-0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80}
+    command: npm run deploy:docker
+    networks:
+      - flux-network
+
+  # 테스트 실행 서비스
+  test-runner:
+    build: .
+    container_name: flux-test-runner
+    volumes:
+      - ./contracts:/app/contracts
+      - ./test:/app/test
+      - ./coverage:/app/coverage
+    command: npm test
+    networks:
+      - flux-network
+
+  # IPFS 노드 (NFT 메타데이터용)
+  ipfs:
+    image: ipfs/go-ipfs:latest
+    container_name: flux-ipfs
+    ports:
+      - "4001:4001"
+      - "5001:5001"
+      - "8080:8080"
+    volumes:
+      - ./ipfs-data:/data/ipfs
+    networks:
+      - flux-network
+
+  # 모니터링 (선택사항)
+  ganache-gui:
+    image: trufflesuite/ganache:latest
+    container_name: flux-ganache-gui
+    ports:
+      - "7545:8545"
+    environment:
+      - ACCOUNT_KEYS_PATH=/app/keys.json
+    volumes:
+      - ./ganache-data:/app/data
+    networks:
+      - flux-network
+
+networks:
+  flux-network:
+    driver: bridge
+
+volumes:
+  ipfs-data:
+  ganache-data:

@@ -1,0 +1,16 @@
+node_modules
+.env
+coverage
+coverage.json
+typechain
+typechain-types
+cache
+artifacts
+deployments/localhost
+.DS_Store
+._*
+*.log
+.git
+.github
+docs
+README.md
