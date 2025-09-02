@@ -20,7 +20,10 @@
       "Bash(git commit:*)",
       "Bash(git remote add:*)",
       "Bash(git branch:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(cp:*)",
+      "Bash(npm run build:*)",
+      "Bash(git reset:*)"
     ],
     "deny": []
   }
